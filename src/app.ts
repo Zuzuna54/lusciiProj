@@ -1,40 +1,48 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 import routes from './routes';
+import { errorHandler, notFoundHandler, setupGlobalErrorHandlers } from './middleware/errorHandler';
+import { requestLogger } from './middleware/requestLogger';
+import { securityHeaders, removeFingerprinting } from './middleware/security';
+import { defaultLimiter } from './middleware/rateLimiter';
+import logger from './utils/logger';
+
+// Set up global error handlers
+setupGlobalErrorHandlers();
 
 // Initialize Express app
-const app: Application = express();
+const app = express();
 
-// Middleware
+// Security middleware
+app.use(securityHeaders);
+app.use(removeFingerprinting);
+
+// Basic middleware
+app.use(helmet());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Rate limiting
+app.use(defaultLimiter);
+
+// Request logging
+app.use(requestLogger);
+
 // Routes
-app.use('/', routes);
+app.use('/api', routes);
 
 // Health check endpoint
 app.get('/health', (_req: Request, res: Response) => {
-    res.status(200).json({ status: 'OK', message: 'Service is healthy' });
+    logger.info('Health check endpoint accessed');
+    res.status(200).json({ status: 'ok', environment: process.env.NODE_ENV || 'development' });
 });
 
 // 404 handler for undefined routes
-app.use((_req: Request, res: Response) => {
-    res.status(404).json({
-        error: {
-            status: 404,
-            message: 'Resource not found'
-        }
-    });
-});
+app.use(notFoundHandler);
 
-// Basic error handler
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-    console.error(err.stack);
-    res.status(500).json({
-        error: {
-            status: 500,
-            message: 'Internal server error'
-        }
-    });
-});
+// Error handler
+app.use(errorHandler);
 
 export default app; 

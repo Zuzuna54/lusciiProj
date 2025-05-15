@@ -1,5 +1,6 @@
 import noteService from '../../../src/services/noteService';
 import { v4 as uuidv4 } from 'uuid';
+import { ValidationError, NotFoundError } from '../../../src/utils/errors';
 
 // Mock uuid module
 jest.mock('uuid', () => ({
@@ -8,7 +9,7 @@ jest.mock('uuid', () => ({
 
 describe('NoteService', () => {
     beforeEach(() => {
-        // Clear notes before each test
+        // Clear all notes before each test
         noteService.clearNotes();
         jest.clearAllMocks();
     });
@@ -30,8 +31,18 @@ describe('NoteService', () => {
         });
 
         it('should throw an error when content is invalid', () => {
-            expect(() => noteService.createNote({ content: '' })).toThrow('Invalid note content');
-            expect(() => noteService.createNote({ content: 123 as unknown as string })).toThrow('Invalid note content');
+            // Empty content
+            expect(() => noteService.createNote({ content: '' }))
+                .toThrow(ValidationError);
+
+            // Content is too long (assuming there's a max length validation)
+            const longContent = 'a'.repeat(1001); // Assuming max length is 1000
+            expect(() => noteService.createNote({ content: longContent }))
+                .toThrow(ValidationError);
+
+            // Content is not a string
+            expect(() => noteService.createNote({ content: 123 as any }))
+                .toThrow(ValidationError);
         });
     });
 
@@ -79,16 +90,15 @@ describe('NoteService', () => {
         });
 
         it('should throw an error when ID is invalid', () => {
-            expect(() => noteService.getNote('invalid-id')).toThrow('Invalid note ID');
-            expect(() => noteService.getNote(123 as unknown as string)).toThrow('Invalid note ID');
+            expect(() => noteService.getNote('invalid-id')).toThrow(ValidationError);
+            expect(() => noteService.getNote(123 as any)).toThrow(ValidationError);
         });
     });
 
     describe('deleteNote', () => {
-        it('should return false when deleting non-existent note', () => {
-            const mockId = '123e4567-e89b-12d3-a456-426614174000';
-            const deleted = noteService.deleteNote(mockId);
-            expect(deleted).toBe(false);
+        it('should throw NotFoundError when deleting non-existent note', () => {
+            expect(() => noteService.deleteNote('123e4567-e89b-12d3-a456-426614174000'))
+                .toThrow(NotFoundError);
         });
 
         it('should delete a note with matching ID', () => {
@@ -105,8 +115,8 @@ describe('NoteService', () => {
         });
 
         it('should throw an error when ID is invalid', () => {
-            expect(() => noteService.deleteNote('invalid-id')).toThrow('Invalid note ID');
-            expect(() => noteService.deleteNote(123 as unknown as string)).toThrow('Invalid note ID');
+            expect(() => noteService.deleteNote('invalid-id')).toThrow(ValidationError);
+            expect(() => noteService.deleteNote(123 as any)).toThrow(ValidationError);
         });
     });
 

@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import noteService from '../services/noteService';
-import { Note } from '../models/note';
+import { NotFoundError } from '../utils/errors';
 
 /**
  * Controller for handling notes-related requests
@@ -10,24 +10,12 @@ class NotesController {
      * Creates a new note
      * @param req - Express request object
      * @param res - Express response object
+     * @param next - Express next function
      */
-    createNote(req: Request, res: Response): void {
+    createNote(req: Request, res: Response, next: NextFunction): void {
         try {
+            // Validation is already handled by middleware
             const { content } = req.body;
-
-            // Validate content
-            if (!Note.isValidContent(content)) {
-                res.status(400).json({
-                    error: {
-                        status: 400,
-                        message: 'Invalid note content',
-                        details: ['Content is required and must be a non-empty string']
-                    }
-                });
-                return;
-            }
-
-            // Create note
             const newNote = noteService.createNote({ content });
 
             // Return created note
@@ -35,13 +23,7 @@ class NotesController {
                 data: newNote
             });
         } catch (error) {
-            console.error('Error creating note:', error);
-            res.status(500).json({
-                error: {
-                    status: 500,
-                    message: 'Failed to create note'
-                }
-            });
+            next(error);
         }
     }
 
@@ -49,8 +31,9 @@ class NotesController {
      * Gets all notes
      * @param req - Express request object
      * @param res - Express response object
+     * @param next - Express next function
      */
-    getNotes(_req: Request, res: Response): void {
+    getNotes(_req: Request, res: Response, next: NextFunction): void {
         try {
             const notes = noteService.getAllNotes();
 
@@ -61,13 +44,7 @@ class NotesController {
                 }
             });
         } catch (error) {
-            console.error('Error retrieving notes:', error);
-            res.status(500).json({
-                error: {
-                    status: 500,
-                    message: 'Failed to retrieve notes'
-                }
-            });
+            next(error);
         }
     }
 
@@ -75,33 +52,17 @@ class NotesController {
      * Deletes a note by ID
      * @param req - Express request object
      * @param res - Express response object
+     * @param next - Express next function
      */
-    deleteNote(req: Request, res: Response): void {
+    deleteNote(req: Request, res: Response, next: NextFunction): void {
         try {
+            // Validation is already handled by middleware
             const { id } = req.params;
-
-            // Validate ID
-            if (!Note.isValidId(id)) {
-                res.status(400).json({
-                    error: {
-                        status: 400,
-                        message: 'Invalid note ID',
-                        details: ['ID must be a valid UUID']
-                    }
-                });
-                return;
-            }
 
             // Check if note exists
             const note = noteService.getNote(id);
             if (!note) {
-                res.status(404).json({
-                    error: {
-                        status: 404,
-                        message: `Note with ID ${id} not found`
-                    }
-                });
-                return;
+                throw new NotFoundError(`Note with ID ${id} not found`);
             }
 
             // Delete note
@@ -110,13 +71,7 @@ class NotesController {
             // Return no content
             res.status(204).send();
         } catch (error) {
-            console.error('Error deleting note:', error);
-            res.status(500).json({
-                error: {
-                    status: 500,
-                    message: 'Failed to delete note'
-                }
-            });
+            next(error);
         }
     }
 }

@@ -25,10 +25,15 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.15.18",

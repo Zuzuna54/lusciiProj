@@ -10,7 +10,7 @@ jest.mock('uuid', () => ({
 
 describe('Notes API', () => {
     beforeEach(() => {
-        // Clear notes before each test
+        // Clear all notes before each test
         noteService.clearNotes();
         jest.clearAllMocks();
     });
@@ -21,7 +21,7 @@ describe('Notes API', () => {
             (uuidv4 as jest.Mock).mockReturnValue(mockId);
 
             const response = await request(app)
-                .post('/notes')
+                .post('/api/notes')
                 .send({ content: 'Test note' })
                 .expect('Content-Type', /json/)
                 .expect(201);
@@ -35,33 +35,35 @@ describe('Notes API', () => {
 
         it('should return 400 if content is missing', async () => {
             const response = await request(app)
-                .post('/notes')
+                .post('/api/notes')
                 .send({})
                 .expect('Content-Type', /json/)
                 .expect(400);
 
             expect(response.body).toHaveProperty('error');
             expect(response.body.error).toHaveProperty('status', 400);
-            expect(response.body.error).toHaveProperty('message', 'Invalid note content');
+            expect(response.body.error).toHaveProperty('message', 'Validation failed');
+            expect(response.body.error).toHaveProperty('details');
         });
 
         it('should return 400 if content is empty', async () => {
             const response = await request(app)
-                .post('/notes')
+                .post('/api/notes')
                 .send({ content: '' })
                 .expect('Content-Type', /json/)
                 .expect(400);
 
             expect(response.body).toHaveProperty('error');
             expect(response.body.error).toHaveProperty('status', 400);
-            expect(response.body.error).toHaveProperty('message', 'Invalid note content');
+            expect(response.body.error).toHaveProperty('message', 'Validation failed');
+            expect(response.body.error).toHaveProperty('details');
         });
     });
 
     describe('GET /notes', () => {
         it('should return an empty array when no notes exist', async () => {
             const response = await request(app)
-                .get('/notes')
+                .get('/api/notes')
                 .expect('Content-Type', /json/)
                 .expect(200);
 
@@ -84,7 +86,7 @@ describe('Notes API', () => {
             await noteService.createNote({ content: 'Note 2' });
 
             const response = await request(app)
-                .get('/notes')
+                .get('/api/notes')
                 .expect('Content-Type', /json/)
                 .expect(200);
 
@@ -105,7 +107,7 @@ describe('Notes API', () => {
             await noteService.createNote({ content: 'Test note' });
 
             await request(app)
-                .delete(`/notes/${mockId}`)
+                .delete(`/api/notes/${mockId}`)
                 .expect(204);
 
             // Verify note was deleted
@@ -117,7 +119,7 @@ describe('Notes API', () => {
             const mockId = '123e4567-e89b-12d3-a456-426614174000';
 
             const response = await request(app)
-                .delete(`/notes/${mockId}`)
+                .delete(`/api/notes/${mockId}`)
                 .expect('Content-Type', /json/)
                 .expect(404);
 
@@ -128,13 +130,14 @@ describe('Notes API', () => {
 
         it('should return 400 when deleting with an invalid ID', async () => {
             const response = await request(app)
-                .delete('/notes/invalid-id')
+                .delete('/api/notes/invalid-id')
                 .expect('Content-Type', /json/)
                 .expect(400);
 
             expect(response.body).toHaveProperty('error');
             expect(response.body.error).toHaveProperty('status', 400);
-            expect(response.body.error).toHaveProperty('message', 'Invalid note ID');
+            expect(response.body.error).toHaveProperty('message', 'Validation failed');
+            expect(response.body.error).toHaveProperty('details');
         });
     });
 }); 

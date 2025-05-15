@@ -6,7 +6,7 @@ describe('Health Endpoint', () => {
         const response = await request(app).get('/health');
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('status', 'OK');
-        expect(response.body).toHaveProperty('message', 'Service is healthy');
+        expect(response.body).toHaveProperty('status', 'ok');
+        expect(response.body).toHaveProperty('environment');
     });
 }); 
