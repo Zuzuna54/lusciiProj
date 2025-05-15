@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Notes API Project Rules
+
+This file serves as an index to the Cursor rules defined for the Notes API project. These rules provide guidance for development according to the project requirements and development phases.
+
+## Available Rules
+
+1. **Project Overview** (`project-overview.mdc`)
+   - General project guidelines and structure
+   - Core principles and development flow
+   - Project structure and coding standards
+
+2. **API Implementation** (`api-implementation.mdc`)
+   - Data model specifications
+   - In-memory data store implementation
+   - Controller standards and response formatting
+
+3. **Error Handling** (`error-handling.mdc`)
+   - Custom error classes and middleware
+   - Standard error response formats
+   - Security measures and logging standards
+
+4. **Testing Standards** (`testing-standards.mdc`)
+   - Test structure and organization
+   - Unit and integration testing requirements
+   - Test best practices and coverage goals
+
+5. **AWS Integration** (`aws-integration.mdc`)
+   - Lambda architecture guidelines
+   - DynamoDB integration planning
+   - Authentication and deployment strategies
+
+6. **Documentation Standards** (`documentation-standards.mdc`)
+   - API documentation requirements
+   - README structure and content
+   - Architecture and operational documentation
+
+7. **Coding Style** (`coding-style.mdc`)
+   - TypeScript best practices
+   - Naming conventions and code organization
+   - Error handling and documentation standards
+

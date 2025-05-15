@@ -1,0 +1,55 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Documentation Standards
+
+## API Documentation
+- Use OpenAPI/Swagger for interactive API documentation
+- Document each endpoint with:
+  - HTTP method and URL
+  - Request parameters and body schema
+  - Response schema for success and error cases
+  - Example requests and responses
+- Include authentication requirements
+
+## README Documentation
+- Structure README.md with:
+  - Project overview and purpose
+  - Features and capabilities
+  - Installation and setup instructions
+  - Environment configuration
+  - API usage examples with curl commands
+  - Development workflow
+  - Testing procedures
+  - Deployment instructions
+
+## Code Documentation
+- Use JSDoc comments for functions and classes
+- Document parameters, return values, and thrown exceptions
+- Include usage examples for complex functions
+- Explain non-obvious implementation details
+
+## Architecture Documentation
+- Create component diagrams showing:
+  - System components and their relationships
+  - Request flow through the application
+  - Data flow and storage
+- Document directory structure and file organization
+- Explain design decisions and trade-offs
+
+## AWS Deployment Documentation
+- Document AWS resources required
+- Include deployment instructions
+- Provide troubleshooting guides
+- Document monitoring and alerting setup
+- Include rollback procedures
+
+## Operation Runbooks
+- Create procedures for common operational tasks:
+  - Deployment process
+  - Monitoring and alerting
+  - Backup and restore
+  - Troubleshooting common issues
+- Document escalation paths and contact information

@@ -1,0 +1,51 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Coding Style Guidelines
+
+## TypeScript Best Practices
+- Use strict TypeScript configuration
+- Define interfaces for all data structures
+- Use proper type annotations for function parameters and return values
+- Avoid using `any` type when possible
+- Use type guards for runtime type checking
+
+## Naming Conventions
+- Use camelCase for variables, function names, and method names
+- Use PascalCase for class names and interface names
+- Use UPPER_SNAKE_CASE for constants
+- Use descriptive and meaningful names
+- Prefix interfaces with 'I' (e.g., `INote`)
+- Prefix type definitions with 'T' (e.g., `TConfig`)
+
+## Code Organization
+- One class/interface per file
+- Group related functions in appropriate modules
+- Use barrel exports (index.ts) for cleaner imports
+- Sort imports alphabetically
+- Use absolute imports for project modules
+
+## Error Handling
+- Use try-catch blocks for error-prone code
+- Never swallow errors silently
+- Always log or return errors
+- Use custom error classes for different error types
+- Handle async errors properly with try/catch or .catch()
+
+## Comments and Documentation
+- Use JSDoc style comments for functions and classes
+- Add comments for complex logic
+- Keep comments up-to-date with code changes
+- Prefer self-documenting code over excessive comments
+- Document public APIs thoroughly
+
+## Best Practices
+- Keep functions small and focused (single responsibility)
+- Avoid deep nesting of conditionals and loops
+- Use early returns to reduce nesting
+- Avoid code duplication
+- Use dependency injection for better testability
+- Prefer immutable data structures
+- Avoid side effects in functions

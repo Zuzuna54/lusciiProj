@@ -1,0 +1,61 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# AWS Serverless Integration Guidelines
+
+## Lambda Architecture
+- Design serverless functions for each endpoint:
+  - `createNote`: Handle POST /notes
+  - `getNotes`: Handle GET /notes
+  - `deleteNote`: Handle DELETE /notes/:id
+- Configure appropriate memory and timeout settings
+- Use environment variables for configuration
+
+## API Gateway
+- Set up REST API with the following endpoints:
+  - `POST /notes`
+  - `GET /notes`
+  - `DELETE /notes/{id}`
+- Configure request/response mapping
+- Implement CORS if needed
+- Set up proper content-type handling
+
+## DynamoDB Integration
+- Design table structure:
+  - Primary key: `id` (string)
+  - No sort key needed for simple implementation
+  - Consider TTL attribute if notes should expire
+- Access patterns:
+  - Get all notes: Scan or Query with GSI
+  - Get specific note: GetItem by ID
+  - Delete note: DeleteItem by ID
+
+## Authentication with Cognito
+- Set up user pool for authentication
+- Configure appropriate OAuth flows
+- Implement JWT token validation
+- Create authentication middleware for API Gateway
+
+## IAM Configuration
+- Create least-privilege IAM roles:
+  - Lambda execution role with DynamoDB access
+  - API Gateway role
+- Set up resource-based policies
+- Consider using IAM policy conditions for additional security
+
+## Deployment Strategy
+- Use Infrastructure as Code:
+  - AWS SAM, Serverless Framework, or AWS CDK
+- Implement CI/CD pipeline for automated deployment
+- Create deployment stages (dev, test, prod)
+- Plan for zero-downtime deployments
+
+## Monitoring and Logging
+- Configure CloudWatch for:
+  - Metrics and alarms
+  - Log collection
+  - Tracing with X-Ray
+- Set up alerts for error rates and latency issues
+- Implement structured logging for better analysis

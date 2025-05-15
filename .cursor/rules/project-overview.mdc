@@ -1,0 +1,47 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Notes API Project Guidelines
+
+This project implements a lightweight Notes API with three core endpoints:
+- `POST /notes` — Add a new note
+- `GET /notes` — Retrieve all notes
+- `DELETE /notes/:id` — Delete a note by ID
+
+## Core Principles
+- Use Node.js with TypeScript
+- Implement in-memory storage (no database required)
+- Maintain clear, modular, and maintainable code
+- Handle errors securely (avoid exposing stack traces or internal logic)
+- Include comprehensive unit and integration tests
+- Document thoroughly for team understanding and future AWS deployment
+
+## Project Structure
+```
+src/
+├── controllers/    # Request handlers
+├── middleware/     # Custom middleware
+├── models/         # Data models
+├── routes/         # API route definitions
+├── services/       # Business logic
+├── utils/          # Helper functions
+└── app.ts          # Main application file
+tests/              # Test files
+```
+
+## Development Flow
+Follow the 5-phase development approach:
+1. Project Setup and Basic Structure
+2. Core API Functionality
+3. Error Handling and Security
+4. Testing
+5. Documentation and AWS Integration Planning
+
+## Coding Standards
+- Use TypeScript for type safety
+- Follow consistent naming conventions
+- Implement proper error handling
+- Write clean, self-documenting code with appropriate comments
+- Create modular and testable components

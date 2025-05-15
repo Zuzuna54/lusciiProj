@@ -1,0 +1,59 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API Implementation Standards
+
+## Data Models
+- Note model should include:
+  - `id`: string (UUID)
+  - `content`: string
+  - `createdAt`: Date
+  - `updatedAt`: Date
+- Use TypeScript interfaces for type definitions
+
+## In-Memory Data Store
+- Implement storage using JavaScript arrays or objects
+- Service methods should include:
+  - `createNote(content)`: Creates a new note with a unique ID
+  - `getAllNotes()`: Returns all notes
+  - `getNote(id)`: Returns a specific note by ID
+  - `deleteNote(id)`: Deletes a note by ID
+  - `clearNotes()`: For testing purposes
+
+## Controller Implementation
+- Create separate controller methods for each endpoint
+- Controllers should handle:
+  - Request parsing
+  - Input validation
+  - Service method calls
+  - Response formatting
+- Follow RESTful principles for API design
+
+## Response Formatting
+- `POST /notes`: Return 201 status code with the created resource
+- `GET /notes`: Return 200 status code with all notes
+- `DELETE /notes/:id`: Return 204 status code (no content)
+- For errors, use appropriate HTTP status codes (400, 404, 500, etc.)
+- Format success responses consistently:
+  ```json
+  {
+    "data": { /* resource or resources */ },
+    "meta": { /* pagination or additional info if needed */ }
+  }
+  ```
+
+## Validation Requirements
+- Validate POST request body:
+  - Content is required
+  - Content must be a string
+  - Content may have maximum length validation
+- Validate DELETE request parameter:
+  - ID must be in valid UUID format
+
+## Service Layer
+- Keep business logic separate from controllers
+- Implement validation in the service layer
+- Generate UUIDs for new notes
+- Set timestamps for created and updated dates

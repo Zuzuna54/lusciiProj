@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "path": "index.mdc",
+      "description": "Notes API Project Rules Overview",
+      "priority": 1,
+      "alwaysApply": true
+    },
+    {
+      "path": "project-overview.mdc",
+      "description": "Notes API Project Overview and Guidelines",
+      "priority": 2,
+      "alwaysApply": true
+    },
+    {
+      "path": "coding-style.mdc",
+      "description": "Coding Style Guidelines",
+      "priority": 3,
+      "alwaysApply": true
+    },
+    {
+      "path": "api-implementation.mdc",
+      "description": "API Implementation Standards and Data Handling",
+      "priority": 4,
+      "alwaysApply": false
+    },
+    {
+      "path": "error-handling.mdc",
+      "description": "Error Handling and Security Standards",
+      "priority": 5,
+      "alwaysApply": false
+    },
+    {
+      "path": "testing-standards.mdc",
+      "description": "Testing Standards and Best Practices",
+      "priority": 6,
+      "alwaysApply": false
+    },
+    {
+      "path": "documentation-standards.mdc",
+      "description": "Documentation Standards and Best Practices",
+      "priority": 7,
+      "alwaysApply": false
+    },
+    {
+      "path": "aws-integration.mdc",
+      "description": "AWS Serverless Integration Guidelines",
+      "priority": 8,
+      "alwaysApply": false
+    }
+  ]
+}

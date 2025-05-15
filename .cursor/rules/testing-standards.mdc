@@ -1,0 +1,56 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Testing Standards
+
+## Test Structure
+- Organize tests into:
+  - Unit tests (`tests/unit/`)
+  - Integration tests (`tests/integration/`)
+  - Security tests (`tests/security/`)
+- Keep test files close to implementation files
+- Use descriptive test names that explain what is being tested
+
+## Unit Tests
+- Test service methods in isolation:
+  - `createNote`
+  - `getAllNotes`
+  - `getNote`
+  - `deleteNote`
+- Test controller methods with mocked services
+- Cover both success and error scenarios
+- Achieve at least 80% code coverage for core functionality
+
+## Integration Tests
+- Test the complete request-response cycle
+- Test all API endpoints:
+  - `POST /notes`
+  - `GET /notes`
+  - `DELETE /notes/:id`
+- Test validation errors
+- Verify error responses have correct status codes and format
+
+## Security Tests
+- Test rate limiting functionality
+- Test input validation and sanitization
+- Verify security headers
+- Test error handling for malformed inputs
+
+## Test Helpers
+- Create reusable test utilities:
+  - Request helper for API testing
+  - Test data generators
+  - Database reset functions
+
+## Test Best Practices
+- Use setup and teardown hooks to reset state between tests
+- Tests should be independent and not rely on each other
+- Mock external dependencies to isolate the code being tested
+- Use descriptive assertions that clearly explain what is being verified
+
+## Running Tests
+- Configure npm scripts for running different test suites
+- Set up CI integration to run tests automatically
+- Generate and track test coverage reports

@@ -1,0 +1,58 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Error Handling and Security Standards
+
+## Custom Error Classes
+- Implement the following error classes:
+  - `NotFoundError`: For resources not found (404)
+  - `ValidationError`: For invalid inputs (400)
+  - `InternalServerError`: For unexpected server errors (500)
+- Each error class should:
+  - Extend from a base Error class
+  - Include status code
+  - Include error message
+  - Optional details array for validation errors
+
+## Error Handler Middleware
+- Create a centralized error handling middleware
+- Map different error types to appropriate HTTP responses
+- Hide implementation details and stack traces from client responses
+- Log errors with appropriate severity levels
+- Implement global unhandled exception and promise rejection handlers
+
+## Standard Error Response Format
+```json
+{
+  "error": {
+    "status": 400,
+    "message": "Validation failed",
+    "details": ["Content is required"]
+  }
+}
+```
+
+## Input Validation and Sanitization
+- Use a validation library (e.g., `joi`, `express-validator`)
+- Sanitize all inputs to prevent injection attacks
+- Validate request body, URL parameters, and query parameters
+- Create reusable validation middleware
+
+## Security Measures
+- Implement rate limiting:
+  - More permissive for GET requests
+  - Stricter for POST and DELETE requests
+- Configure security headers using helmet:
+  - Content-Security-Policy
+  - X-Content-Type-Options
+  - X-Frame-Options
+  - X-XSS-Protection
+- Disable headers that expose system information
+
+## Logging Standards
+- Log all requests with method, endpoint, status code, and response time
+- Log errors with detailed information (for internal use only)
+- Sanitize sensitive data before logging
+- Use different log levels (info, warn, error) appropriately
