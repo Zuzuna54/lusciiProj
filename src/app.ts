@@ -7,6 +7,7 @@ import { requestLogger } from './middleware/requestLogger';
 import { securityHeaders, removeFingerprinting } from './middleware/security';
 import { defaultLimiter } from './middleware/rateLimiter';
 import logger from './utils/logger';
+import { setupSwaggerDocs } from './middleware/swaggerMiddleware';
 
 // Set up global error handlers
 setupGlobalErrorHandlers();
@@ -29,6 +30,9 @@ app.use(defaultLimiter);
 
 // Request logging
 app.use(requestLogger);
+
+// Set up Swagger UI documentation
+setupSwaggerDocs(app);
 
 // Routes
 app.use('/api', routes);

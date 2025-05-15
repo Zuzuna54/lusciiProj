@@ -1,7 +1,6 @@
 erDiagram
-    %% DynamoDB Table Structure for Notes API
     NOTES {
-        string id PK "UUID - Partition Key"
+        string id "PK - UUID - Partition Key"
         string content "Note content"
         string createdAt "ISO timestamp"
         string updatedAt "ISO timestamp"
@@ -10,10 +9,9 @@ erDiagram
         string status "Active/Archived/Deleted"
     }
 
-    %% GSI for queries by user ID
     NOTES_BY_USER {
-        string userId PK "GSI Partition Key"
-        string createdAt SK "GSI Sort Key"
+        string userId "PK - GSI Partition Key"
+        string createdAt "SK - GSI Sort Key"
         string id "Original PK"
         string content "Note content"
         string updatedAt "ISO timestamp"
@@ -21,10 +19,9 @@ erDiagram
         string status "Active/Archived/Deleted"
     }
 
-    %% GSI for queries by status (for admin purposes)
     NOTES_BY_STATUS {
-        string status PK "GSI Partition Key"
-        string createdAt SK "GSI Sort Key"
+        string status "PK - GSI Partition Key"
+        string createdAt "SK - GSI Sort Key"
         string id "Original PK"
         string userId "User ID"
         string content "Note content"
@@ -34,4 +31,4 @@ erDiagram
 
     %% Relationships between the main table and GSIs
     NOTES ||--|| NOTES_BY_USER : "GSI-1"
-    NOTES ||--|| NOTES_BY_STATUS : "GSI-2" 
+    NOTES ||--|| NOTES_BY_STATUS : "GSI-2"
