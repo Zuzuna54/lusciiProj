@@ -1,0 +1,258 @@
+openapi: 3.0.3
+info:
+  title: Notes API
+  description: |
+    A RESTful API for managing notes. This API allows you to create, read and delete notes.
+    It includes validation, rate limiting, and proper error handling.
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+  - url: https://api.example.com/api
+    description: Production server (future)
+
+tags:
+  - name: Notes
+    description: Operations related to notes
+  - name: Health
+    description: API health check
+
+paths:
+  /notes:
+    post:
+      summary: Create a new note
+      tags:
+        - Notes
+      operationId: createNote
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNoteRequest"
+      responses:
+        "201":
+          description: Note created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoteResponse"
+        "400":
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    get:
+      summary: Get all notes
+      tags:
+        - Notes
+      operationId: getNotes
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: List of notes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetNotesResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /notes/{id}:
+    delete:
+      summary: Delete a note by ID
+      tags:
+        - Notes
+      operationId: deleteNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the note to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Note deleted successfully
+        "400":
+          description: Bad request - invalid ID format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Note not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /health:
+    get:
+      summary: Get API health status
+      tags:
+        - Health
+      operationId: healthCheck
+      responses:
+        "200":
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  environment:
+                    type: string
+                    example: "development"
+                required:
+                  - status
+                  - environment
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authorization
+
+  schemas:
+    CreateNoteRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Content of the note
+          example: "Remember to buy milk"
+          maxLength: 1000
+      required:
+        - content
+
+    Note:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the note
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        content:
+          type: string
+          description: Content of the note
+          example: "Remember to buy milk"
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time when the note was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date and time when the note was last updated
+      required:
+        - id
+        - content
+        - createdAt
+        - updatedAt
+
+    NoteResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/Note"
+      required:
+        - data
+
+    GetNotesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Note"
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+              description: Total number of notes
+              example: 5
+          required:
+            - total
+      required:
+        - data
+        - meta
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code
+              example: 400
+            message:
+              type: string
+              description: Error message
+              example: "Validation failed"
+            details:
+              type: array
+              items:
+                type: string
+              description: Detailed error messages
+              example: ["Content is required"]
+          required:
+            - status
+            - message
+      required:
+        - error

@@ -1,0 +1,42 @@
+sequenceDiagram
+    %% Authentication Flow for Notes API
+    title: Notes API Authentication Flow with AWS Cognito
+
+    participant Client as Client Application
+    participant Cognito as Amazon Cognito
+    participant APIGateway as API Gateway
+    participant Lambda as Lambda Function
+    participant DynamoDB as DynamoDB
+
+    %% User Registration
+    note over Client, Cognito: User Registration
+    Client->>Cognito: Register (username, email, password)
+    Cognito-->>Client: Confirmation Code
+    Client->>Cognito: Confirm Registration (code)
+    Cognito-->>Client: Registration Confirmed
+
+    %% User Login
+    note over Client, DynamoDB: User Authentication
+    Client->>Cognito: Login (username, password)
+    Cognito-->>Client: ID Token, Access Token, Refresh Token
+    
+    %% API Request with Token
+    note over Client, DynamoDB: Authenticated API Request
+    Client->>APIGateway: Request + Authorization Header (JWT)
+    APIGateway->>APIGateway: Validate JWT with Cognito User Pool
+    
+    alt JWT Valid
+        APIGateway->>Lambda: Forward Request + User Context
+        Lambda->>Lambda: Check User Permissions
+        Lambda->>DynamoDB: Perform Database Operation
+        DynamoDB-->>Lambda: Operation Result
+        Lambda-->>APIGateway: API Response
+        APIGateway-->>Client: HTTP Response
+    else JWT Invalid
+        APIGateway-->>Client: 401 Unauthorized
+    end
+    
+    %% Token Refresh
+    note over Client, Cognito: Token Refresh (when expired)
+    Client->>Cognito: Refresh Token Request
+    Cognito-->>Client: New ID and Access Tokens 

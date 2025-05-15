@@ -1,36 +1,95 @@
 # Notes API
 
-A lightweight internal Notes API for Luscii, built with Node.js and TypeScript following serverless architecture principles.
+A RESTful API for managing notes built with Node.js, Express, and TypeScript. Currently using an in-memory data store, with plans to migrate to AWS DynamoDB.
 
-## Overview
+## Architecture
 
-This project implements a simple API with three endpoints:
+The Notes API follows a layered architecture pattern:
 
-- `POST /notes` — Add a new note
-- `GET /notes` — Retrieve all notes
-- `DELETE /notes/:id` — Delete a note by ID
+- **Controllers**: Handle HTTP requests and responses
+- **Services**: Implement business logic
+- **Models**: Define data structures
+- **Middleware**: Process requests before they reach route handlers
+- **Routes**: Define API endpoints
+- **Utils**: Provide helper functions and utilities
 
-## Development Phases
+See our architecture diagrams:
 
-The project development is organized into 5 logical phases:
+- [Project Architecture](docs/diagrams/project-architecture.mmd)
+- [AWS Lambda Architecture](docs/diagrams/aws-architecture.mmd)
+- [DynamoDB Structure](docs/diagrams/dynamodb-structure.mmd)
+- [Authentication Flow](docs/diagrams/authentication-flow.mmd)
+- [Monitoring Strategy](docs/diagrams/monitoring-strategy.mmd)
 
-1. **Project Setup and Basic Structure** - Foundation setup with appropriate directory structure and dependencies
-2. **Core API Functionality** - Implementation of the three required endpoints with in-memory storage
-3. **Error Handling and Security** - Robust error handling and security measures
-4. **Testing** - Comprehensive unit and integration testing
-5. **Documentation and AWS Integration Planning** - Preparation for serverless deployment
+## AWS Integration Plan
 
-For detailed information about each phase, see the `docs/phases/` directory.
+The Notes API is planned to be deployed on AWS with the following infrastructure:
 
-## Getting Started
+1. **AWS Lambda** for serverless compute
+2. **Amazon API Gateway** for request handling and routing
+3. **Amazon DynamoDB** for data persistence
+4. **Amazon CloudWatch** for logging and monitoring
+5. **AWS CloudFormation** for infrastructure as code
+6. **Amazon Cognito** for user authentication
 
-To get started with development, follow the instructions in the Phase 1 documentation: [Phase 1: Project Setup and Basic Structure](docs/phases/phase1.md)
+## API Documentation
 
-## Requirements
+API specifications are available in OpenAPI 3.0 format:
 
-- Node.js 14+
-- TypeScript
+- [API Specification](docs/api-spec.yaml)
+
+## Installation
+
+```bash
+npm install
+```
+
+## Running the Application
+
+```bash
+# Development mode with hot reload
+npm run dev
+
+# Production mode
+npm run start
+```
+
+## Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run unit tests
+npm run test:unit
+
+# Run integration tests
+npm run test:integration
+```
+
+## Error Handling
+
+The API implements a centralized error handling mechanism with custom error classes:
+
+- **AppError**: Base error class
+- **ValidationError**: For request validation errors
+- **NotFoundError**: For resource not found errors
+
+## Security Features
+
+- **Helmet**: Secure HTTP headers
+- **Rate limiting**: Prevent abuse
+- **CORS**: Configured for cross-origin requests
+- **Request validation**: Prevent invalid data
+
+## Monitoring
+
+The API includes monitoring features:
+
+- Request logging
+- Error logging with sanitization
+- Health check endpoint
 
 ## License
 
-Private - Luscii Internal Use Only
+MIT

@@ -1,0 +1,92 @@
+graph TD
+    %% Monitoring Strategy for Notes API on AWS
+    title[Notes API Monitoring Strategy]
+    style title fill:#fff,stroke:#fff
+
+    %% Main Components
+    APIGateway[API Gateway]
+    Lambda[Lambda Function]
+    DynamoDB[DynamoDB]
+    
+    %% CloudWatch Components
+    CloudWatch[CloudWatch]
+    Metrics[CloudWatch Metrics]
+    Logs[CloudWatch Logs]
+    Alarms[CloudWatch Alarms]
+    Dashboard[CloudWatch Dashboard]
+    
+    %% X-Ray
+    XRay[AWS X-Ray]
+    
+    %% SNS for Notifications
+    SNS[Amazon SNS]
+    Email[Email Notifications]
+    Slack[Slack Notifications]
+    
+    %% Data Collection Flow
+    APIGateway --> Metrics
+    Lambda --> Metrics
+    Lambda --> Logs
+    DynamoDB --> Metrics
+    
+    %% X-Ray Tracing
+    APIGateway --> XRay
+    Lambda --> XRay
+    DynamoDB --> XRay
+    
+    %% CloudWatch Organization
+    CloudWatch --> Metrics
+    CloudWatch --> Logs
+    CloudWatch --> Alarms
+    CloudWatch --> Dashboard
+    
+    %% Alert Flow
+    Metrics --> Alarms
+    Logs --> Alarms
+    Alarms --> SNS
+    SNS --> Email
+    SNS --> Slack
+    
+    %% Key Metrics (details)
+    subgraph KeyMetrics[Key Metrics Monitored]
+        API_4xx[API 4xx Error Rate]
+        API_5xx[API 5xx Error Rate]
+        Lambda_Duration[Lambda Execution Time]
+        Lambda_Errors[Lambda Errors]
+        Lambda_Throttles[Lambda Throttles]
+        DynamoDB_Latency[DynamoDB Latency]
+        DynamoDB_Throttles[DynamoDB Throttles]
+        DynamoDB_SystemErrors[DynamoDB System Errors]
+    end
+    
+    %% Connect metrics to sources
+    APIGateway --> API_4xx
+    APIGateway --> API_5xx
+    Lambda --> Lambda_Duration
+    Lambda --> Lambda_Errors
+    Lambda --> Lambda_Throttles
+    DynamoDB --> DynamoDB_Latency
+    DynamoDB --> DynamoDB_Throttles
+    DynamoDB --> DynamoDB_SystemErrors
+    
+    %% Log Groups
+    subgraph LogGroups[Log Groups]
+        API_Logs[API Gateway Logs]
+        Lambda_Logs[Lambda Function Logs]
+    end
+    
+    APIGateway --> API_Logs
+    Lambda --> Lambda_Logs
+    
+    %% Styling
+    classDef primary fill:#FF9900,stroke:#232F3E,color:#232F3E
+    classDef monitor fill:#3F8624,stroke:#232F3E,color:white
+    classDef metric fill:#1F78B4,stroke:#232F3E,color:white
+    classDef alert fill:#E63946,stroke:#232F3E,color:white
+    classDef log fill:#6A994E,stroke:#232F3E,color:white
+    
+    class APIGateway,Lambda,DynamoDB primary
+    class CloudWatch,XRay,Dashboard monitor
+    class Metrics,KeyMetrics,API_4xx,API_5xx,Lambda_Duration,Lambda_Errors,Lambda_Throttles,DynamoDB_Latency,DynamoDB_Throttles,DynamoDB_SystemErrors metric
+    class Alarms,SNS,Email,Slack alert
+    class Logs,LogGroups,API_Logs,Lambda_Logs log 

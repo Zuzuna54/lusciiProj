@@ -1,0 +1,46 @@
+flowchart TD
+    %% AWS Lambda Architecture for Notes API
+    title[Notes API AWS Serverless Architecture]
+    style title fill:#fff,stroke:#fff
+
+    %% Client and API Gateway
+    Client[Client Applications]
+    APIGateway[Amazon API Gateway]
+
+    %% Lambda Functions
+    NotesAPI[Notes API Lambda Function]
+    
+    %% DynamoDB
+    DynamoDB[(Amazon DynamoDB)]
+    
+    %% CloudWatch for Monitoring
+    CloudWatch[Amazon CloudWatch]
+    
+    %% Cognito for Authentication
+    Cognito[Amazon Cognito]
+    
+    %% Flow Definitions
+    Client -- "HTTPS Requests" --> APIGateway
+    APIGateway -- "Proxy Requests" --> NotesAPI
+    NotesAPI -- "CRUD Operations" --> DynamoDB
+    NotesAPI -- "Logs & Metrics" --> CloudWatch
+    Client -- "Authentication" --> Cognito
+    Cognito -- "JWT Token Validation" --> APIGateway
+    
+    %% Additional Services
+    S3[Amazon S3\nStatic Web Hosting]
+    Client -- "Web UI Assets" --> S3
+    
+    CloudFormation[AWS CloudFormation]
+    CloudFormation -- "Deploys" --> NotesAPI
+    CloudFormation -- "Deploys" --> APIGateway
+    CloudFormation -- "Deploys" --> DynamoDB
+    
+    %% Styling
+    classDef awsService fill:#FF9900,stroke:#232F3E,color:#232F3E,stroke-width:1px
+    classDef client fill:#85B3D1,stroke:#232F3E,stroke-width:1px
+    classDef infra fill:#FF9900,stroke:#232F3E,color:#232F3E,stroke-width:1px,stroke-dasharray: 5 5
+    
+    class APIGateway,NotesAPI,DynamoDB,CloudWatch,Cognito,S3 awsService
+    class Client client
+    class CloudFormation infra 

@@ -1,0 +1,73 @@
+graph TD
+    %% Project Architecture Component Diagram
+    title[Notes API Architecture]
+    style title fill:#fff,stroke:#fff
+
+    %% Client Applications
+    Client[Client Applications]
+
+    %% API Gateway Layer
+    API[API Gateway]
+
+    %% Controller Layer
+    Controllers[Controllers]
+    Controller_Notes[Notes Controller]
+
+    %% Service Layer
+    Services[Services]
+    Service_Notes[Notes Service]
+
+    %% Data Storage
+    DataStore[Data Store]
+    InMemory[In-Memory Storage]
+    DynamoDB[DynamoDB<br />Future Implementation]
+    
+    %% Middleware Components
+    Middleware[Middleware]
+    Validator[Request Validators]
+    ErrorHandler[Error Handler]
+    RateLimiter[Rate Limiter]
+    Security[Security Headers]
+    Logger[Request Logger]
+    Auth[Authentication<br />Future Implementation]
+
+    %% Core Utils
+    Utils[Utilities]
+    ErrorClasses[Custom Error Classes]
+    LoggerUtil[Logger Utility]
+
+    %% Flow Definitions
+    Client --> API
+    API --> Controllers
+    Controllers --> Services
+    Services --> DataStore
+    DataStore --> InMemory
+    DataStore -.-> DynamoDB
+    
+    %% Controller Specifics
+    Controllers --> Controller_Notes
+    
+    %% Service Specifics
+    Services --> Service_Notes
+    
+    %% Middleware Interactions
+    API --> Middleware
+    Middleware --> Validator
+    Middleware --> ErrorHandler
+    Middleware --> RateLimiter
+    Middleware --> Security
+    Middleware --> Logger
+    Middleware -.-> Auth
+    
+    %% Utilities
+    ErrorHandler --> ErrorClasses
+    Logger --> LoggerUtil
+
+    %% Styling
+    classDef primary fill:#f9f,stroke:#333,stroke-width:2px
+    classDef secondary fill:#bbf,stroke:#333,stroke-width:1px
+    classDef future fill:#ddd,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+    
+    class Client,API,Controllers,Services,DataStore,Middleware,Utils primary
+    class Controller_Notes,Service_Notes,Validator,ErrorHandler,RateLimiter,Security,Logger,ErrorClasses,LoggerUtil,InMemory secondary
+    class DynamoDB,Auth future 

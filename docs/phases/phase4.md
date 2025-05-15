@@ -1,10 +1,10 @@
-# Phase 5: Documentation and AWS Integration Planning
+# Phase 4: Documentation and AWS Integration Planning
 
 Building upon the tested Notes API from previous phases, this final phase focuses on comprehensive documentation and planning for AWS serverless deployment.
 
 ## Tasks
 
-### 5.1 Create API Documentation
+### 4.1 Create API Documentation
 
 - Install and configure a documentation tool (e.g., Swagger/OpenAPI, JSDoc)
 - Document each API endpoint:
@@ -12,10 +12,9 @@ Building upon the tested Notes API from previous phases, this final phase focuse
   - Request parameters and body schema
   - Response schema for success and error cases
   - Examples of requests and responses
-- Document authentication requirements (for future implementation)
 - Generate interactive API documentation that can be served with the API
 
-### 5.2 Create Developer Documentation
+### 4.2 Create Developer Documentation
 
 - Create a comprehensive README.md with:
   - Project overview and purpose
@@ -29,7 +28,7 @@ Building upon the tested Notes API from previous phases, this final phase focuse
   - Directory structure explanation
 - Document coding standards and contribution guidelines
 
-### 5.3 AWS Lambda Integration Planning
+### 4.3 AWS Lambda Integration Planning
 
 - Design the AWS Lambda architecture:
   - Create a diagram showing API Gateway, Lambda functions, and DynamoDB
@@ -44,7 +43,7 @@ Building upon the tested Notes API from previous phases, this final phase focuse
   - Manual deployment steps
   - Automated deployment options (e.g., using AWS SAM, Serverless Framework, or AWS CDK)
 
-### 5.4 DynamoDB Migration Planning
+### 4.4 DynamoDB Migration Planning
 
 - Design the DynamoDB table structure:
   - Define the primary key and sort key
@@ -56,7 +55,7 @@ Building upon the tested Notes API from previous phases, this final phase focuse
   - Testing approach for the DynamoDB integration
 - Document DynamoDB access patterns based on API requirements
 
-### 5.5 Authentication Integration Planning
+### 4.5 Authentication Integration Planning
 
 - Document AWS Cognito integration:
   - User pool configuration
@@ -71,7 +70,7 @@ Building upon the tested Notes API from previous phases, this final phase focuse
   - Role-based access control (if needed)
   - Error handling for authentication failures
 
-### 5.6 Create Monitoring and Operations Documentation
+### 4.6 Create Monitoring and Operations Documentation
 
 - Design a monitoring strategy:
   - CloudWatch metrics and alarms
