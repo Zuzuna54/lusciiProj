@@ -1,38 +1,15 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router } from 'express';
+import notesController from '../controllers/notesController';
 
-const notesRouter: Router = express.Router();
+const router: Router = express.Router();
 
 // POST /notes — Add a new note
-notesRouter.post('/', (_req: Request, res: Response) => {
-    // This will be implemented in Phase 2
-    res.status(501).json({
-        error: {
-            status: 501,
-            message: 'Not implemented yet'
-        }
-    });
-});
+router.post('/', notesController.createNote.bind(notesController));
 
 // GET /notes — Retrieve all notes
-notesRouter.get('/', (_req: Request, res: Response) => {
-    // This will be implemented in Phase 2
-    res.status(501).json({
-        error: {
-            status: 501,
-            message: 'Not implemented yet'
-        }
-    });
-});
+router.get('/', notesController.getNotes.bind(notesController));
 
 // DELETE /notes/:id — Delete a note by ID
-notesRouter.delete('/:id', (_req: Request, res: Response) => {
-    // This will be implemented in Phase 2
-    res.status(501).json({
-        error: {
-            status: 501,
-            message: 'Not implemented yet'
-        }
-    });
-});
+router.delete('/:id', notesController.deleteNote.bind(notesController));
 
-export default notesRouter; 
+export default router; 

@@ -11,7 +11,7 @@ Building on the foundation established in Phase 1, this phase focuses on impleme
   - `content`: string
   - `createdAt`: Date
   - `updatedAt`: Date
-- Define interfaces/types for the Note model (if using TypeScript)
+- Define interfaces/types for the Note model
 - Create validation functions for the Note model
 
 ### 2.2 Implement In-Memory Data Store
